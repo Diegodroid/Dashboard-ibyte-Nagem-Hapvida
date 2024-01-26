@@ -62,7 +62,7 @@ if categoria_selecionada != 'Todos':
     df_filtered = df_filtered[df_filtered['CATEGORIA'] == categoria_selecionada]
 
 # Filtrar por tamanho da coluna 'DESCRICAO'
-df_filtered = df_filtered[(df_filtered['DESCRICAO'].str.len() >= min_size) & (df_filtered['DESCRICAO'].str.len() <= max_size)]
+df_filtered = df_filtered[(df_filtered['DESCRICAO'].str.len() >= min_size) & (df_filtered['DESCRICAO'].str.len() <= max_size_selected)]
 
 # Display filtered data
 st.title('Dados Filtrados')
