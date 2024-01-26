@@ -9,7 +9,6 @@ from pathlib import Path
 from st_pages import Page, show_pages, add_page_title
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
-from wordcloud import WordCloud
 from collections import Counter
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -139,12 +138,11 @@ tokens = word_tokenize(descricao_texto)
 stop_words = set(stopwords.words('portuguese'))
 filtered_tokens = [word.lower() for word in tokens if word.isalpha() and word.lower() not in stop_words]
 
-# Por estas linhas
-wordcloud = WordCloud(width=800, height=400, random_state=21, max_font_size=110, background_color='white')
-wordcloud.generate_from_frequencies(Counter(filtered_tokens))
+# Gerar Nuvem de Palavras
+wordcloud = WordCloud(width=800, height=400, random_state=21, max_font_size=110, background_color='white').generate_from_frequencies(Counter(filtered_tokens))
 
-# Em seguida, substitua a linha de exibição da imagem no Streamlit
-st.image(wordcloud.to_image(), use_container_width=True)
+# Exibir Nuvem de Palavras
+st.image(wordcloud.to_image())
 
 # Exibir histograma de distribuição do tamanho das palavras
 st.title('Distribuição do Tamanho das Palavras na Descrição')
