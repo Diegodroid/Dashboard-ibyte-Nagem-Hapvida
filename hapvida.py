@@ -44,8 +44,7 @@ categoria_selecionada = st.sidebar.selectbox('Selecione a categoria:', categoria
 
 # Adicionar filtro de tamanho para a coluna 'DESCRICAO'
 # Calcular o tamanho máximo da coluna 'DESCRICAO'
-max_size = df_hapvida['DESCRICAO'].str.len().max()
-min_size, max_size = st.sidebar.slider('Selecione a faixa de tamanho da coluna "DESCRICAO":', 0, max_size, (0, max_size))
+min_size, max_size_selected = st.sidebar.slider('Selecione a faixa de tamanho da coluna "DESCRICAO":', 0, df_hapvida['DESCRICAO'].str.len().max(), (0, df_hapvida['DESCRICAO'].str.len().max()))
 # Filter data based on selected options
 df_filtered = df_hapvida.copy()
 
