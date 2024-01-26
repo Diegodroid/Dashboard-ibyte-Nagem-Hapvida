@@ -139,11 +139,12 @@ tokens = word_tokenize(descricao_texto)
 stop_words = set(stopwords.words('portuguese'))
 filtered_tokens = [word.lower() for word in tokens if word.isalpha() and word.lower() not in stop_words]
 
-# Gerar Nuvem de Palavras
-wordcloud = WordCloud(width=800, height=400, random_state=21, max_font_size=110, background_color='white').generate_from_frequencies(Counter(filtered_tokens))
+# Por estas linhas
+wordcloud = WordCloud(width=800, height=400, random_state=21, max_font_size=110, background_color='white')
+wordcloud.generate_from_frequencies(Counter(filtered_tokens))
 
-# Exibir Nuvem de Palavras
-st.image(wordcloud.to_image())
+# Em seguida, substitua a linha de exibição da imagem no Streamlit
+st.image(wordcloud.to_image(), use_container_width=True)
 
 # Exibir histograma de distribuição do tamanho das palavras
 st.title('Distribuição do Tamanho das Palavras na Descrição')
