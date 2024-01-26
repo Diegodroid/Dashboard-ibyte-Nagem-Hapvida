@@ -3,6 +3,6 @@ numpy==1.21.2
 plotly==5.3.1
 streamlit==1.15.0
 wordcloud
-matplotlib==3.4.3
+matplotlib
 nltk==3.6.3
 st-pages==0.4.5
