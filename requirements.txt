@@ -5,3 +5,4 @@ streamlit==1.15.0
 wordcloud==1.8.1
 matplotlib==3.4.3
 nltk==3.6.3
+st-pages==0.8.1
