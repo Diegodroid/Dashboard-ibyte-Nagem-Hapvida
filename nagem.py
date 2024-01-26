@@ -43,8 +43,10 @@ status_selecionado = st.sidebar.selectbox('Selecione o status:', status_options)
 categoria_selecionada = st.sidebar.selectbox('Selecione a categoria:', categoria_options)
 
 # Adicionar filtro de tamanho para a coluna 'DESCRICAO'
-min_size, max_size_selected = st.sidebar.slider('Selecione a faixa de tamanho da coluna "DESCRICAO":', 0, df_NAGEM['DESCRICAO'].str.len().max(), (0, df_NAGEM['DESCRICAO'].str.len().max()))
-# Filter data based on selected options
+min_size, max_size_selected = st.sidebar.slider(
+    'Selecione a faixa de tamanho da coluna "DESCRICAO":',
+    0, int(df_NAGEM['DESCRICAO'].str.len().max()), (0, int(df_NAGEM['DESCRICAO'].str.len().max()))
+)# Filter data based on selected options
 df_filtered = df_NAGEM.copy()
 
 if cidade_selecionada != 'Todos':
