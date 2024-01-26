@@ -46,7 +46,7 @@ categoria_selecionada = st.sidebar.selectbox('Selecione a categoria:', categoria
 min_size, max_size_selected = st.sidebar.slider(
     'Selecione a faixa de tamanho da coluna "DESCRICAO":',
     0, int(df_NAGEM['DESCRICAO'].str.len().max()), (0, int(df_NAGEM['DESCRICAO'].str.len().max()))
-)# Filter data based on selected options
+)# Filter data based on selected option
 df_filtered = df_NAGEM.copy()
 
 if cidade_selecionada != 'Todos':
