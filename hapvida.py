@@ -9,11 +9,10 @@ from pathlib import Path
 from st_pages import Page, show_pages, add_page_title
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
-from wordcloud import WordCloud
+from wordcloud import WordCloud, STOPWORDS
 from collections import Counter
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-
 # Download NLTK stopwords data
 import nltk
 nltk.download('stopwords')
