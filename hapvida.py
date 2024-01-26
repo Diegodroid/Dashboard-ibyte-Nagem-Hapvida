@@ -125,13 +125,17 @@ st.plotly_chart(fig_categoria_cidade)
 # Exibir tabela com as top 10 cidades
 st.table(ocorrencias_por_cidade)
 
+# Função para gerar a nuvem de palavras
 def generate_wordcloud(tokens):
-    wordcloud = WordCloud(width=800, height=400, random_state=21, max_font_size=110, background_color='white')
-    wordcloud.generate_from_frequencies(Counter(tokens))
-    return wordcloud
+    # Criar um DataFrame com as palavras e suas frequências
+    word_counts = Counter(tokens)
+    df_word_counts = pd.DataFrame(list(word_counts.items()), columns=['Palavra', 'Frequência'])
 
-# Nuvem de palavras
-st.title('Nuvem de Palavras Mais Usadas na Descrição')
+    # Criar a nuvem de palavras a partir do DataFrame
+    wordcloud = WordCloud(width=800, height=400, random_state=21, max_font_size=110, background_color='white')
+    wordcloud.generate_from_frequencies(df_word_counts.set_index('Palavra').to_dict()['Frequência'])
+
+    return wordcloud
 
 # Concatenar todas as descrições
 descricao_texto = ' '.join(df_filtered['DESCRICAO'].dropna())
