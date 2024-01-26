@@ -126,11 +126,6 @@ st.plotly_chart(fig_categoria_cidade)
 # Exibir tabela com as top 10 cidades
 st.table(ocorrencias_por_cidade)
 
-def generate_wordcloud(tokens):
-    wordcloud = WordCloud(width=800, height=400, random_state=21, max_font_size=110, background_color='white')
-    wordcloud.generate_from_frequencies(Counter(tokens))
-    return wordcloud
-
 # Nuvem de palavras
 st.title('Nuvem de Palavras Mais Usadas na Descrição')
 
@@ -142,18 +137,14 @@ tokens = word_tokenize(descricao_texto)
 
 # Remover stopwords
 stop_words = set(stopwords.words('portuguese'))
-# Filtrar as palavras-chave mais comuns
-filtered_tokens = [word for word in tokens if word.lower() not in stopwords.words('portuguese')]
+filtered_tokens = [word.lower() for word in tokens if word.isalpha() and word.lower() not in stop_words]
 
-# Exibir a nuvem de palavras no Streamlit
-st.title('Nuvem de Palavras Mais Usadas na Descrição')
-wordcloud = generate_wordcloud(filtered_tokens)
-st.image(wordcloud.to_image(), use_container_width=True)
+# Gerar Nuvem de Palavras
+wordcloud = WordCloud(width=800, height=400, random_state=21, max_font_size=110, background_color='white').generate_from_frequencies(Counter(filtered_tokens))
 
-# Exibir as top 10 palavras em uma tabela
-top_10_palavras = Counter(filtered_tokens).most_common(10)
-st.title('Top 10 Palavras Mais Usadas na Descrição')
-st.write(pd.DataFrame(top_10_palavras, columns=['Palavra', 'Quantidade']))
+# Exibir Nuvem de Palavras
+st.image(wordcloud.to_image())
+
 
 
 # Exibir histograma de distribuição do tamanho das palavras
