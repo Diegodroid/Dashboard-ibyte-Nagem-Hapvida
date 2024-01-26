@@ -44,8 +44,10 @@ categoria_selecionada = st.sidebar.selectbox('Selecione a categoria:', categoria
 
 # Adicionar filtro de tamanho para a coluna 'DESCRICAO'
 # Calcular o tamanho máximo da coluna 'DESCRICAO'
-min_size, max_size_selected = st.sidebar.slider('Selecione a faixa de tamanho da coluna "DESCRICAO":', 0, df_hapvida['DESCRICAO'].str.len().max(), (0, df_hapvida['DESCRICAO'].str.len().max()))
-# Filter data based on selected options
+min_size, max_size_selected = st.sidebar.slider(
+    'Selecione a faixa de tamanho da coluna "DESCRICAO":',
+    0, int(df_hapvida['DESCRICAO'].str.len().max()), (0, int(df_hapvida['DESCRICAO'].str.len().max()))
+)# Filter data based on selected options
 df_filtered = df_hapvida.copy()
 
 if cidade_selecionada != 'Todos':
@@ -61,7 +63,7 @@ if categoria_selecionada != 'Todos':
     df_filtered = df_filtered[df_filtered['CATEGORIA'] == categoria_selecionada]
 
 # Filtrar por tamanho da coluna 'DESCRICAO'
-df_filtered = df_filtered[(df_filtered['DESCRICAO'].str.len() >= min_size) & (df_filtered['DESCRICAO'].str.len() <= max_size)]
+df_filtered = df_filtered[(df_filtered['DESCRICAO'].str.len() >= min_size) & (df_filtered['DESCRICAO'].str.len() <= max_size_selected)]
 
 # Display filtered data
 st.title('Dados Filtrados')
@@ -125,24 +127,24 @@ st.plotly_chart(fig_categoria_cidade)
 # Exibir tabela com as top 10 cidades
 st.table(ocorrencias_por_cidade)
 
-# Nuvem de palavras
+# Função para gerar a nuvem de palavras
+def generate_wordcloud(tokens):
+    wordcloud = WordCloud(width=800, height=400, random_state=21, max_font_size=110, background_color='white')
+    wordcloud.generate_from_frequencies(Counter(tokens))
+    return wordcloud
+
+# Filtrar as palavras-chave mais comuns
+filtered_tokens = [word for word in word_tokenize(df_filtered['DESCRICAO'].str.cat(sep=' ')) if word.lower() not in stopwords.words('portuguese')]
+
+# Exibir a nuvem de palavras no Streamlit
 st.title('Nuvem de Palavras Mais Usadas na Descrição')
+wordcloud = generate_wordcloud(filtered_tokens)
+st.image(wordcloud.to_image(), use_container_width=True)
 
-# Concatenar todas as descrições
-descricao_texto = ' '.join(df_filtered['DESCRICAO'].dropna())
-
-# Tokenizar o texto em palavras
-tokens = word_tokenize(descricao_texto)
-
-# Remover stopwords
-stop_words = set(stopwords.words('portuguese'))
-filtered_tokens = [word.lower() for word in tokens if word.isalpha() and word.lower() not in stop_words]
-
-# Gerar Nuvem de Palavras
-wordcloud = WordCloud(width=800, height=400, random_state=21, max_font_size=110, background_color='white').generate_from_frequencies(Counter(filtered_tokens))
-
-# Exibir Nuvem de Palavras
-st.image(wordcloud.to_image())
+# Exibir as top 10 palavras em uma tabela
+top_10_palavras = Counter(filtered_tokens).most_common(10)
+st.title('Top 10 Palavras Mais Usadas na Descrição')
+st.write(pd.DataFrame(top_10_palavras, columns=['Palavra', 'Quantidade']))
 
 # Exibir histograma de distribuição do tamanho das palavras
 st.title('Distribuição do Tamanho das Palavras na Descrição')
